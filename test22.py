@@ -1,6 +1,6 @@
 from State import *
 
-Q = np.genfromtxt ('Q_22.csv', delimiter=",")
+Q = np.genfromtxt ('Q2222.csv', delimiter=",")
 
 n = 0
 total_wins = 0
@@ -26,5 +26,8 @@ while n<1000:
 
 percent = total_wins/n *100
 #print(gamma, alpha_C, N_e)
-print(total_wins,n)
-print(str(percent)+"%")
+print("Total games: "+str(n))
+print("Hard-coded AI wins "+str(n-total_wins))
+print("Q_Learning AI wins "+str(total_wins))
+print()
+print("Wining rate:"+str(percent)+"%")

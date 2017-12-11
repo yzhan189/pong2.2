@@ -1,3 +1,4 @@
+# this is right
 from State import *
 import random
 import time
@@ -11,17 +12,21 @@ def q_learn_and_store(gamma, alpha_C,N_e):
     def alpha(t):
         return alpha_C/(alpha_C+t-1)
 
-    def f_function(u_action,n):
-        if n < N_e:
-            return random.randint(0,2)
-        else :
-            return u_action
+    def find_action(qs,ns):
+        my_q = np.zeros(3)
+        for i in range(3):
+            if ns[i] < N_e:
+                my_q[i] = 1
+            else:
+                my_q[i] = qs[i]
+
+        return np.argmax(my_q)
 
     # Q(s,a) (up,stay,down)
-    # Q = np.zeros((124418,3))
-    # N = np.zeros((124418,3))
-    Q = np.genfromtxt ('Q_22.csv', delimiter=",")
-    N = np.genfromtxt ('N_22.csv', delimiter=",")
+    Q = np.zeros((124418,3))
+    N = np.zeros((124418,3))
+    # Q = np.genfromtxt ('Q22.csv', delimiter=",")
+    # N = np.genfromtxt ('N22.csv', delimiter=",")
 
 
     n = 0
@@ -33,7 +38,7 @@ def q_learn_and_store(gamma, alpha_C,N_e):
     a_t = random.randint(0,2)
 
     start_time = time.time()
-    while n<100000:
+    while n<200000:
         # terminal state
         if s >= 124416:
             n +=1
@@ -71,7 +76,7 @@ def q_learn_and_store(gamma, alpha_C,N_e):
             if s != s_prime:
                 diff += 1
 
-            a_t = f_function(a_prime, N[s_prime,a_prime])
+            a_t = find_action(Q[s_prime],N[s_prime])
             s = s_prime
             t += 1
 
@@ -79,8 +84,8 @@ def q_learn_and_store(gamma, alpha_C,N_e):
     print(n,t, diff)
     print(end_time-start_time)
 
-    np.savetxt("Q_22.csv", Q, delimiter=",")
-    np.savetxt("N_22.csv", N, delimiter=",")
+    np.savetxt("Q2222.csv", Q, delimiter=",")
+    np.savetxt("N2222.csv", N, delimiter=",")
 
     #Q = np.genfromtxt ('part22.csv', delimiter=",")
 
@@ -107,7 +112,7 @@ def q_learn_and_store(gamma, alpha_C,N_e):
 
 
     ave = total_wins/n
-    #print(gamma, alpha_C, N_e)
+    print(gamma, alpha_C, N_e)
     print(total_wins,n,ave)
     print()
     return ave
