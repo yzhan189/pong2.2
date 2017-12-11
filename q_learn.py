@@ -100,3 +100,5 @@ def q_learn(gamma, alpha_C,N_e):
     print(ave)
     print()
     return ave
+
+q_learn(0.9,20,10)

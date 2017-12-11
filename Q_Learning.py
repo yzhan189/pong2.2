@@ -2,6 +2,8 @@ from State import *
 import random
 import time
 
+REWARD_WIN = 1
+
 def q_learn_and_store(gamma, alpha_C,N_e):
     # discount factor
     gamma = gamma
@@ -16,10 +18,10 @@ def q_learn_and_store(gamma, alpha_C,N_e):
             return u_action
 
     # Q(s,a) (up,stay,down)
-    Q = np.zeros((124418,3))
-    N = np.zeros((124418,3))
-    # Q = np.genfromtxt ('Q.csv', delimiter=",")
-    # N = np.genfromtxt ('N.csv', delimiter=",")
+    # Q = np.zeros((124418,3))
+    # N = np.zeros((124418,3))
+    Q = np.genfromtxt ('Q_22.csv', delimiter=",")
+    N = np.genfromtxt ('N_22.csv', delimiter=",")
 
 
     n = 0
@@ -31,12 +33,14 @@ def q_learn_and_store(gamma, alpha_C,N_e):
     a_t = random.randint(0,2)
 
     start_time = time.time()
-    while n<10000:
+    while n<100000:
         # terminal state
         if s >= 124416:
             n +=1
-            Q[124416] = [-1,-1,-1]
-            Q[124417] = [2,2,2]
+            if s==124416:
+                Q[s] = [-1,-1,-1]
+            else:
+                Q[s] = [1,1,1]
             if n%1000 ==0:
                 print(n)
             # start a new trial
@@ -75,10 +79,10 @@ def q_learn_and_store(gamma, alpha_C,N_e):
     print(n,t, diff)
     print(end_time-start_time)
 
-    np.savetxt("Q_b.csv", Q, delimiter=",")
-    np.savetxt("N_b.csv", N, delimiter=",")
+    np.savetxt("Q_22.csv", Q, delimiter=",")
+    np.savetxt("N_22.csv", N, delimiter=",")
 
-    Q = np.genfromtxt ('part22.csv', delimiter=",")
+    #Q = np.genfromtxt ('part22.csv', delimiter=",")
 
     n = 0
     total_wins = 0
@@ -93,16 +97,18 @@ def q_learn_and_store(gamma, alpha_C,N_e):
 
         reward = state.move_ball_get_rewards()
 
-        if reward==-1 or reward == 2:
-            if reward ==2:
+        if reward==-1 or reward == REWARD_WIN:
+            if reward ==REWARD_WIN:
                 total_wins+=1
             state = State()
             n += 1
 
 
+
+
     ave = total_wins/n
     #print(gamma, alpha_C, N_e)
-    print(ave)
+    print(total_wins,n,ave)
     print()
     return ave
 

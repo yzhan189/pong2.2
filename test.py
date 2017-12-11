@@ -1,5 +1,5 @@
 from State import *
-Q = np.genfromtxt ('Q_cd.csv', delimiter=",")
+Q = np.genfromtxt ('Q_22.csv', delimiter=",")
 
 n = 0
 total_bounce = 0

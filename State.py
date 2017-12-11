@@ -1,6 +1,8 @@
 import numpy as np
 from HardCode import *
 
+REWARD_WIN = 1
+
 # on [0,1]
 class State:
     paddle_height = 0.2
@@ -50,7 +52,7 @@ class State:
                 self.ball_x = -self.ball_x
                 self.velocity_x = -self.velocity_x
             else:
-                reward = 2
+                reward = REWARD_WIN
 
 
         # right side
@@ -60,7 +62,6 @@ class State:
                 self.ball_x = 2 - self.ball_x
                 self.velocity_x = -self.velocity_x + (-0.015+np.random.random_sample()*0.03)
                 self.velocity_y = self.velocity_y + (-0.03+np.random.random_sample()*0.06)
-                reward = 1
             # out of board
             else:
                 reward = -1
@@ -86,12 +87,9 @@ class State:
         discrete_paddle_y = np.floor(12 * self.paddle_y / (1 - self.paddle_height))
         discrete_paddle_y = min(discrete_paddle_y,11)
         # 0-11
-        if self.left_paddle.y < 0:
-            print(self.left_paddle.y)
         discrete_paddle_left = np.floor(12 * self.left_paddle.y / (1 - self.paddle_height))
         discrete_paddle_left = min(discrete_paddle_left,11)
-        if discrete_paddle_left < 0:
-            print(discrete_paddle_left)
+
         # 0-11
         discrete_ball_x = min(np.floor(self.ball_x*12),11)
         # 0-11
@@ -109,7 +107,7 @@ class State:
         # set state index
         # get out off board
         if self.ball_x >1 and (self.ball_y < self.paddle_y or self.ball_y > self.paddle_y + self.paddle_height):
-            index = 124417 - 1
+            index = 124416
         elif self.ball_x < 0 and (self.ball_y < self.left_paddle.y or self.ball_y < self.left_paddle.y+ self.paddle_height):
             index = 124417
         else:
